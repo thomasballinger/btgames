@@ -21,10 +21,36 @@ To debug your install script, try:
 
 `fab install:<yourModuleNameHere> -H <hostname from prev command> -i <key filename from prev command>
 
+
 To set up a scenario:
 
-`fab installScenario1:tom`
+`fab installScenario1:tom,<big datafile to download>`
+
+Then run it with
 
 `fab runScenario1:<username>,test.torrent -H <hostname from prev command> -i <key filename from prev command>
 
-Try fab install
+Change the datafile without reinstalling:
+
+`fab seedFile:<big datafile>,<announce url (printed at some point)> -H <seeding server hostname (printed at some point)>`
+
+Download one of the test files (see results section), upload it, and add your times!
+
+Results:
+========
+
+One Tracker, One Peer, Default Deluge Upload Limit
+--------------------------------------------------
+
+Small File (2MB, https://dl.dropboxusercontent.com/u/42074050/1999-12-31%2018.20.09.jpg)
+
+* Tom: 4.8, 2.2, 2.4, 2.15, 2.18
+
+Medium File (28 MB, http://www.gutenberg.org/cache/epub/29765/pg29765.txt)
+
+* Tom: 14.8, 14.9, 15.7
+
+Large File (200MB, http://05d2db1380b6504cc981-8cbed8cf7e3a131cd8f1c3e383d10041.r93.cf2.rackcdn.com/pycon-us-2010/276_the-mighty-dictionary-55.m4v)
+
+* Tom: 529 seconds
+
