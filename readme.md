@@ -45,6 +45,8 @@ Change the datafile without reinstalling:
 
 Download one of the test files (see results section), upload it, and add your times!
 
+If setting up an Amazon account is a burden, let me know and we can write your script together on my account.
+
 Results:
 ========
 
