@@ -17,13 +17,18 @@ Remember to turn off your instances when you're done!
 To Run:
 
 
-Write a python module that provies three functions: install, torretfile, and download. See tom.py as an example.
+Write a python module that provies three functions: install, torretfile, and download. See tom.py as an example, and add your to the resitory for more examples.
 
 To debug your install script, try:
 
 `fab newInstance`
 
 `fab install:<yourModuleNameHere> -H <hostname from prev command> -i <key filename from prev command>
+
+You can poke around your instance with
+
+`ssh <hostname from prev command> -i <key filename from prev command>
+
 
 
 To set up a scenario:
@@ -42,6 +47,8 @@ Download one of the test files (see results section), upload it, and add your ti
 
 Results:
 ========
+
+Tom's bittorrent client: https://github.com/thomasballinger/bittorrent
 
 One Tracker, One Peer, Default Deluge Upload Limit
 --------------------------------------------------
