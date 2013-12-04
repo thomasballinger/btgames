@@ -7,6 +7,7 @@ from fabric.contrib.files import exists, append
 from fabric.context_managers import settings
 from fabric.api import env
 import os
+import sys
 import time
 
 import start_instance
@@ -25,7 +26,7 @@ def installTracker():
 def startTracker():
     run('screen -d -m "opentracker/opentracker"', pty=False)
 
-def getAnnounceUrl():
+def _getAnnounceUrl():
     user, host = env.host_string.split('@')
     announce = 'http://%s:6969/announce' % (host,)
     print 'announce url:', announce
@@ -40,9 +41,11 @@ def seedFile(datafilename, announce):
 
     put(datafilename, os.path.basename(datafilename))
     run('buildtorrent -a %s %s test.torrent' % (announce, os.path.basename(datafilename)))
-    run('deluged')
-    time.sleep(10)
-    run('deluge-console add test.torrent')
+
+    run('deluged; sleep 1; deluge-console add test.torrent')
+    # For some reasons doing these separately doesn't work will
+    # This seems to work for now...
+
     get('test.torrent', 'test.torrent')
 
 def newInstance():
@@ -50,43 +53,50 @@ def newInstance():
     print 'set up instance, access with:'
     print 'ssh %s -i %s' % (access, pem)
 
-
-def newClient(filename, announce):
-    access, pem = start_instance.start_instance()
-    with settings(host_string=access, key_filename=pem):
-        with settings(connection_attempts=10, timeout=10):
-            print 'waiting for instance to boot up...'
-            run('uname') # waiting for instance to boot up
-        installDeluge()
-        seedFile(filename)
-
-def installYours():
-    sudo('apt-get update')
-    sudo('apt-get install -y python-pip python-dev build-essential git')
-    run('git clone https://github.com/thomasballinger/bittorrent.git')
-    with cd('bittorrent'):
-        sudo('pip install -r requirements.txt')
-
-def runYours(torrentfile):
-    put('test.torrent', 'test.torrent')
-    t0 = time.time()
-    with cd('bittorrent'):
-        run('time python main.py ../test.torrent')
-    t = time.time() - t0
-    print 'slow time is %2f seconds' % t
-
-def scenario_one_peer_one_tracker(filename):
+def installScenario1(who, filename):
+    """takes a data filename and a user - One peer, one tracker"""
+    user = _get_userscript(who)
     (tracker, peer, yours), pem = start_instance.start_instances(3)
     with settings(key_filename=pem):
         with settings(host_string=tracker):
             installTracker()
             startTracker()
-            announce = getAnnounceUrl()
+            announce = _getAnnounceUrl()
         with settings(host_string=peer):
             installDeluge()
             seedFile(filename, announce)
         with settings(host_string=yours):
-            print 'your server is:', env.host_string
-            installYours()
-            runYours('test.torrent')
+            user.install()
+            print 'to run scenario, try "fab run_scenario_1:<username> -H %s -i %s"' % (env.host_string, env.key_filename)
 
+def runScenario1(who, torrentfile):
+    """One peer, one tracker"""
+    user = _get_userscript(who)
+    user.torrentfile(torrentfile)
+    t0 = time.time()
+    user.download(torrentfile)
+    t = time.time() - t0
+    print 'command took %2f seconds' % t
+
+def _get_userscript(who):
+    if who[-3:] == '.py':
+        who = who[:-3]
+    if '.' not in sys.path:
+        sys.path.append('.')
+    try:
+        user_functions = __import__(who)
+    except ImportError:
+        print os.getcwd()
+        raise ValueError("can't find script for user %s" % who)
+    if not (hasattr(user_functions, 'install') and
+            hasattr(user_functions, 'torrentfile') and
+            hasattr(user_functions, 'download')):
+        raise ValueError("User file must have 'install', 'torrentfile', and 'download' functions")
+    return user_functions
+
+def install(who):
+    user = _get_userscript(who)
+    user.install()
+    print 'Should be installed on', env.host_string
+    print 'To look around, try'
+    print 'ssh %s -i %s' % (env.host_string, env.key_filename)

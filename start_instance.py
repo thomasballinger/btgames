@@ -10,6 +10,7 @@ the machines we boot up, since only keypair access is allowed via ssh,
 but could be very dangerous if you have other instances in this security group.
 """
 import os
+import sys
 import time
 from glob import glob
 
@@ -92,9 +93,13 @@ def _start_instance():
 
 def start_instance():
     instance, pem = _start_instance()
+    spinner = '-\|/'
+    i = 0
     while True:
+        i += 1
         time.sleep(1)
-        print instance.update()
+        sys.stdout.write('%s%s\r' % (spinner[i%4], instance.update()))
+        sys.stdout.flush()
         if instance.state == 'running':
             time.sleep(45) # seems to take this long before an apt-get update will work correctly
             break
