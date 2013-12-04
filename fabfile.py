@@ -76,7 +76,7 @@ def runScenario1(who, torrentfile):
     user = _get_userscript(who)
     user.torrentfile(torrentfile)
     t0 = time.time()
-    user.download(torrentfile)
+    user.download()
     t = time.time() - t0
     print 'command took %2f seconds' % t
 
