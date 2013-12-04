@@ -46,7 +46,7 @@ def get_key_pair_name_and_pem_file(conn, pem_filename=None):
         print 'new key pair created:', new_key_pair_name
         key.save('.')
         print 'new key pair pem saved to current directory', os.path.abspath('.')
-        return new_key_pair_name, os.path.join(os.path.abspath('.'), name+'.pem')
+        return new_key_pair_name, os.path.join(os.path.abspath('.'), new_key_pair_name+'.pem')
 
     keys = conn.get_all_key_pairs()
     if pem_filename:
