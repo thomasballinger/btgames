@@ -7,6 +7,8 @@ You'll need your AWS credentials in environmental variables
 `AMAZON_ACCESS_KEY` and `AMAZON_SECRET_KEY`
 to run the fabric scripts.
 
+If you don't have such a pair yet, you'll need to create one on the AWS Security Credentials page.
+
 You also need to
 
 `pip install fabric boto`
