@@ -52,6 +52,8 @@ def newInstance():
     access, pem = start_instance.start_instance()
     print 'set up instance, access with:'
     print 'ssh %s -i %s' % (access, pem)
+    env.host_string = access
+    env.key_filename = pem
 
 def installScenario1(who, filename):
     """takes a data filename and a user - One peer, one tracker"""
@@ -70,7 +72,7 @@ def installScenario1(who, filename):
             print 'to run scenario, try "fab run_scenario_1:<username> -H %s -i %s"' % (env.host_string, env.key_filename)
 
 def runScenario1(who, torrentfile):
-    """One peer, one tracker"""
+    """Whose code to test, which torrent files - One peer, one tracker"""
     user = _get_userscript(who)
     user.torrentfile(torrentfile)
     t0 = time.time()
