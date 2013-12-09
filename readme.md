@@ -25,25 +25,27 @@ To debug your install script, try:
 
 `fab newInstance`
 
-`fab install:yourModuleNameHere -H hostname from prev command -i key filename from prev command`
+`fab install:yourModuleNameHere -H hostname_from_prev_command -i key filename_from_prev_command`
 
 You can poke around your instance with
 
-`ssh hostname from prev command -i key filename from prev command`
+`ssh hostname_from_prev_command -i key filename_from_prev_command`
 
 
 
 To set up a scenario:
 
-`fab installScenario1:tom,big datafile to download`
+Download the file you want to test using `wget`. Then, run
+
+`fab installScenario1:tom,big_datafile_to_download`
 
 Then run it with
 
-`fab runScenario1:username,test.torrent -H hostname from prev command -i key filename from prev command
+`fab runScenario1:username,test.torrent -H hostname_from_prev_command -i pem_key_from_prev_command`
 
 Change the datafile without reinstalling:
 
-`fab seedFile:big datafile,announce url (printed at some point) -H seeding server hostname (printed at some point)`
+`fab seedFile:big_datafile,announce_url (printed at some point) -H seeding_server_hostname (printed at some point)`
 
 Download one of the test files (see results section), upload it, and add your times!
 
