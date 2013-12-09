@@ -41,7 +41,7 @@ Download the file you want to test using `wget`. Then, run
 
 Then run it with
 
-`fab runScenario1:username,test.torrent -H hostname_from_prev_command -i key filename_from_prev_command`
+`fab runScenario1:username,test.torrent -H hostname_from_prev_command -i pem_key_from_prev_command`
 
 Change the datafile without reinstalling:
 
