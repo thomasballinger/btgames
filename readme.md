@@ -38,11 +38,11 @@ Keep track of all the commands you use, and write a script similar to tom.py. Te
 
 then try out your install script for real:
 
-`fab use_new_instance:client wait_until_ready install:tom` but replace "tom" with your custom module
+`fab use_new_instance:client install:tom` but replace "tom" with your custom module
 
 Once you've got a working install script, spin up a tracker and a peer:
 
-`fab use_new_instance:tracker wait_until_ready install_tracker & use_new_instance:peer wait_until_ready install_deluge`
+`fab use_new_instance:tracker install_tracker & use_new_instance:peer install_deluge`
 
 take a moment to reflect on the three instances you're running,
 

@@ -14,6 +14,7 @@ import awsinstances
 
 def install_tracker():
     """Installs opentracker"""
+    wait_until_ready()
     sudo('apt-get update')
     sudo('apt-get -y install cvs make git build-essential lib32z-dev')
     run('cvs -d :pserver:cvs@cvs.fefe.de:/cvs -z9 co libowfat')
@@ -59,7 +60,7 @@ def list():
         print inst.tags.get('Name', '(no name)'), inst.state, _hostname(inst)
 
 def wait_until_ready():
-    """Wait until all specified instances are ready - 10s of idle time"""
+    """Wait until all specified instances are ready - 10s of idle time. Run automatically before install commands"""
     while True:
         with settings(warn_only=True, connection_attempts=1000, timeout=.1):
             while True:
@@ -74,6 +75,7 @@ def terminate():
 
 def install_deluge():
     """Install the Deluge bittorrent client"""
+    wait_until_ready()
     sudo('apt-get update')
     sudo('apt-get install -y deluge-console deluged buildtorrent')
 
@@ -144,6 +146,7 @@ def _get_userscript(who):
 
 def install(who):
     """install:yourModule - Uses custom install function from yourModule.py on current instance"""
+    wait_until_ready()
     user = _get_userscript(who)
     user.install()
     print 'Should be installed on', env.host_string
