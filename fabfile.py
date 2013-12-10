@@ -93,7 +93,7 @@ def seed_file(datafilename, tracker=None):
         port = 6969
         announce = 'http://%s:%d/announce' % (inst.public_dns_name, port)
     put(datafilename, os.path.basename(datafilename))
-    run('buildtorrent -a %s %s test.torrent' % (announce, os.path.basename(datafilename)))
+    run('buildtorrent -a %s "%s" test.torrent' % (announce, os.path.basename(datafilename)))
 
     run('deluged; sleep 1; deluge-console add test.torrent')
     # For some reasons doing these separately doesn't work will
