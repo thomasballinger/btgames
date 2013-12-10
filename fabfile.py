@@ -23,7 +23,7 @@ def install_tracker():
     with cd("opentracker"):
         run('make')
     port = 6969
-    user, host = env.host_string.split('@')
+    host = _dns_from_hoststring()
     inst = awsinstances.get_instance(public_dns_name=host)
     announce = 'http://%s:%d/announce' % (inst.public_dns_name, port)
     _save_announce_url(announce)
@@ -54,19 +54,20 @@ def list():
         print 'no instances currently in use, listing all instances:'
         instances = awsinstances.get_instances()
     else:
-        instances = [awsinstances.get_instance(public_dns_name=env.host_string.split('@')[1])]
+        instances = [awsinstances.get_instance(public_dns_name=_dns_from_hoststring())]
     for inst in instances:
-        print inst.tags.get('Name', '(no name)'), _hostname(inst)
+        print inst.tags.get('Name', '(no name)'), inst.state, _hostname(inst)
 
 def wait_until_ready():
     """Wait until all specified instances are ready"""
     while True:
-        print 'outer loop'
         with settings(warn_only=True, connection_attempts=1000, timeout=.1):
-            print 'inner loop'
             result = run('ping -c 1 -W 1 google.com')
             if result.return_code == 0:
                 break
+
+def terminate():
+    awsinstances.terminate_instance(public_dns_name=_dns_from_hoststring())
 
 def install_deluge():
     """Install the Deluge bittorrent client"""
@@ -82,6 +83,9 @@ def _get_saved_announce_url():
 def _save_announce_url(announce):
     with open(ANNOUNCE_URL_FILE, 'w') as f:
         f.write(announce)
+
+def _dns_from_hoststring():
+    return env.host_string.split('@')[1]
 
 def seed_file(datafilename, tracker=None):
     """seed_file:bigFile.txt[,tracker] - Uploads file, creates a torrent file for it, and seeds it.  If tracker name not provided, use saved announce url"""

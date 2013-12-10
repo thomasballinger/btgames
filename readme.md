@@ -25,29 +25,17 @@ Contest Rules
 New Instructions
 ----------------
 
-Plan:
-
-* nicely named instances! Really important!
-  * tracker1, peer1, peer2, client1
-  * keep track of names
-  * make -i unnecessary - just add the key with ssh-add
-* command to list running instances
-* command to kill running instances
-* tags on instances so we know which ones are bittorrent ones
-
-
-
-
-
-Old Version
------------
-
-
-Write a python module that provies three functions: install, torretfile, and download. See tom.py as an example, and add your to the resitory for more examples.
+It's your job to write a python module provides three functions: install, torretfile, and download. See tom.py as an example, and add your to the repository for more examples, and so others can test your client on their own scenario.
 
 To debug your install script, try:
 
-`fab newInstance`
+`fab new_instance:testing`
+
+and try to install your bittorrent client. Keep track of all the commands you use, and write a script similar to tom.py. Terminate that instance,
+
+`fab 
+
+Thi
 
 `fab install:yourModuleNameHere -H hostname_from_prev_command -i key filename_from_prev_command`
 

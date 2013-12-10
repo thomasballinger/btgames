@@ -53,7 +53,7 @@ def get_key_pair_name_and_pem_file(conn, pem_filename=None):
     keys = conn.get_all_key_pairs()
 
     for key in keys:
-        fn = find_key_file(key)
+        fn = find_key_file(key.name)
         if fn:
             return key, fn
     else:
@@ -70,12 +70,14 @@ def find_key_file(name):
         if name == os.path.basename(pem)[:-4]:
             return os.path.abspath(pem)
 
-def get_ec2_connection():
+def get_ec2_connection(cached=[]):
     """Returns connection object"""
-    access_key = os.environ['AMAZON_ACCESS_KEY']
-    secret_key = os.environ['AMAZON_SECRET_KEY']
-    conn = boto.ec2.connection.EC2Connection(access_key, secret_key)
-    return conn
+    if cached == []:
+        access_key = os.environ['AMAZON_ACCESS_KEY']
+        secret_key = os.environ['AMAZON_SECRET_KEY']
+        conn = boto.ec2.connection.EC2Connection(access_key, secret_key)
+        cached.append(conn)
+    return cached[0]
 
 def get_ami(conn):
     ami_id = 'ami-a73264ce' #ubuntu1204
@@ -89,6 +91,7 @@ def new_instance(label):
     secgrp = get_security_group(conn)
     image = get_ami(conn)
 
+    print 'keyname:', key
     reservation = image.run(key_name=key,
             security_groups=[secgrp],
             instance_type='m1.small')
@@ -98,19 +101,30 @@ def new_instance(label):
     instance.add_tag('Group', GROUPNAME)
     return instance, pem
 
+def terminate_instance(*args, **kwargs):
+    conn = get_ec2_connection()
+    inst = get_instance(*args, **kwargs)
+    conn.terminate_instances(instance_ids=[inst.id])
+
 def get_instances():
     conn = get_ec2_connection()
     return [inst for inst in conn.get_only_instances() if inst.tags.get('Group') == GROUPNAME]
 
 def get_instance(name=None, public_dns_name=None):
+    if name and public_dns_name:
+        raise ValueError("specify just one")
     conn = get_ec2_connection()
     if public_dns_name:
-        inst, = [inst for inst in conn.get_only_instances() if inst.public_dns_name == public_dns_name]
+        instances = [inst for inst in conn.get_only_instances() if inst.public_dns_name == public_dns_name]
     elif name:
-        inst, = [inst for inst in conn.get_only_instances() if inst.tags.get('Name') == name]
+        instances = [inst for inst in conn.get_only_instances() if inst.tags.get('Name') == name and inst.state not in ['shutting-down', 'terminated']]
     else:
         raise ValueError('specify a name or hostname!')
-    return inst
+    if len(instances) < 1:
+        raise ValueError("Can't find instance from '%s'" % name or public_dns_name)
+    elif len(instances) > 1:
+        raise ValueError("Found two instances from '%s'" % name or public_dns_name)
+    return instances[0]
 
 if __name__ == '__main__':
     #conn = get_ec2_connection()
