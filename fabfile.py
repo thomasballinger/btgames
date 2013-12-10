@@ -40,7 +40,7 @@ def seedFile(datafilename, announce):
     """Uploads file, creates a torrent file for it, and seeds it"""
 
     put(datafilename, os.path.basename(datafilename))
-    run('buildtorrent -a %s %s test.torrent' % (announce, os.path.basename(datafilename)))
+    run('buildtorrent -a %s "%s" test.torrent' % (announce, os.path.basename(datafilename)))
 
     run('deluged; sleep 1; deluge-console add test.torrent')
     # For some reasons doing these separately doesn't work will
