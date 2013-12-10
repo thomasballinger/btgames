@@ -62,14 +62,14 @@ One Tracker, One Peer, Default Deluge Upload Limit
 Small File (2MB, https://dl.dropboxusercontent.com/u/42074050/1999-12-31%2018.20.09.jpg)
 
 * Tom: 4.8, 2.2, 2.4, 2.15, 2.18
-* Stacey: 1.059, .943, .955, 1.035, .977
+* Stacey: 1.06, 0.94, 0.96, 1.04, 0.98
 
 Medium File (28 MB, http://www.gutenberg.org/cache/epub/29765/pg29765.txt)
 
 * Tom: 14.8, 14.9, 15.7
-* Stacey: 8.953, 10.973, 9.531, 7.501, 7.074, 7.841, 6.594, 7.111, 8.213
+* Stacey: 8.95, 10.97, 9.53, 7.5, 7.07, 7.84, 6.59, 7.11, 8.21
 
 Large File (200MB, http://05d2db1380b6504cc981-8cbed8cf7e3a131cd8f1c3e383d10041.r93.cf2.rackcdn.com/pycon-us-2010/276_the-mighty-dictionary-55.m4v)
 
 * Tom: 529 seconds
-* Stacey: 49.261 54.132 53.78 62.408 62.359
+* Stacey: 49.26 54.13 53.78 62.41 62.36
