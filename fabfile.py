@@ -10,7 +10,7 @@ import os
 import sys
 import time
 
-import start_instance
+import awsinstances
 
 def installTracker():
     """Installs opentracker"""
@@ -25,6 +25,36 @@ def installTracker():
 
 def startTracker():
     run('screen -d -m "opentracker/opentracker"', pty=False)
+
+def _hostname(instance):
+    return 'ubuntu@%s' % instance.public_dns_name
+
+def all_instances(name=None):
+    """If name argument provided, use exactly one host"""
+    if name is not None:
+        hosts = [awsinstances.get_instance(name)]
+    else:
+        hosts = awsinstances.get_instances()
+    env.key_filename = awsinstances.find_key_file(hosts[0].key_name)
+    env.hosts = [_hostname(x) for x in hosts]
+
+def instance(name):
+    all_instances(name=name)
+
+def list():
+    for name in [_hostname(x) for x in awsinstances.get_instances()]:
+        print name
+
+def wait_until_ready():
+    if not hasattr(env, 'hostname'):
+        all_instances()
+    while True:
+        print 'outer loop'
+        with settings(warn_only=True, connection_attempts=1000, timeout=.1):
+            print 'inner loop'
+            result = run('ping -c 1 -W 1 google.com')
+            if result.return_code == 0:
+                break
 
 def _getAnnounceUrl():
     user, host = env.host_string.split('@')
@@ -48,8 +78,9 @@ def seedFile(datafilename, announce):
 
     get('test.torrent', 'test.torrent')
 
-def newInstance():
-    access, pem = start_instance.start_instance()
+def newInstance(name):
+    """newInstance:nameOfInstance"""
+    access, pem = awsinstances.new_instance(name)
     print 'set up instance, access with:'
     print 'ssh %s -i %s' % (access, pem)
     env.host_string = access
@@ -58,7 +89,7 @@ def newInstance():
 def installScenario1(who, filename):
     """takes a data filename and a user - One peer, one tracker"""
     user = _get_userscript(who)
-    (tracker, peer, yours), pem = start_instance.start_instances(3)
+    (tracker, peer, yours), pem = awsinstances.start_instances(3)
     with settings(key_filename=pem):
         with settings(host_string=tracker):
             installTracker()

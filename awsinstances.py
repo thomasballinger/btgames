@@ -16,6 +16,8 @@ from glob import glob
 
 import boto.ec2
 
+GROUPNAME = 'BTBenchmark'
+
 def get_security_group(conn):
     sec_group_name = 'allOpen'
     security_groups = conn.get_all_security_groups()
@@ -49,20 +51,24 @@ def get_key_pair_name_and_pem_file(conn, pem_filename=None):
         return new_key_pair_name, os.path.join(os.path.abspath('.'), new_key_pair_name+'.pem')
 
     keys = conn.get_all_key_pairs()
-    if pem_filename:
-        if not os.path.exists(pem_filename):
-            raise EnvironmentError("pem file does not exist")
-        pems = [pem_filename]
-    else:
-        pems = glob(os.path.expanduser('~/*.pem'))
-        pems.extend(glob('./*.pem'))
-    for pem in pems:
-        name = os.path.basename(pem)[:-4]
-        match = [k for k in keys if k.name == name]
-        if match:
-            return name, os.path.abspath(pem)
+
+    for key in keys:
+        fn = find_key_file(key)
+        if fn:
+            return key, fn
     else:
         return new_key(keys)
+
+def find_key_file(name):
+    if name[-4:] == '.pem':
+        name = name[:-4]
+
+    pems = glob(os.path.expanduser('~/*.pem'))
+    pems.extend(glob('./*.pem'))
+    pems.extend(glob(os.path.expanduser('./.ssh/*.pem')))
+    for pem in pems:
+        if name == os.path.basename(pem)[:-4]:
+            return os.path.abspath(pem)
 
 def get_ec2_connection():
     """Returns connection object"""
@@ -76,7 +82,7 @@ def get_ami(conn):
     ami = conn.get_image(ami_id)
     return ami
 
-def _start_instance():
+def new_instance(label):
     """Returns how to access started instance. Blocks until instance is ready."""
     conn = get_ec2_connection()
     key, pem = get_key_pair_name_and_pem_file(conn)
@@ -88,7 +94,8 @@ def _start_instance():
             instance_type='m1.small')
 
     instance = reservation.instances[0]
-    instance.add_tag('BTbenchmark')
+    instance.add_tag('Name', label)
+    instance.add_tag('Group', GROUPNAME)
     return instance, pem
 
 def start_instance():
@@ -118,19 +125,22 @@ def start_instances(n):
     assert all(key == keys[0] for key in keys), 'instances have different keys?'
     return ['ubuntu@' + inst.public_dns_name for inst in instances], keys[0]
 
-def test():
-    host, pem = start_instance()
-    print 'Instance now running! Accessible at'
-    print host
-    print 'using pem'
-    print pem
-    print 'you need to log on as ubuntu'
+def get_instances():
+    conn = get_ec2_connection()
+    return [inst for inst in conn.get_only_instances() if inst.tags.get('Group') == GROUPNAME]
+
+def get_instance(name):
+    conn = get_ec2_connection()
+    inst, = [inst for inst in conn.get_only_instances() if inst.tags.get('Name') == name]
+    return inst
 
 def test_start_instances():
     print start_instances(2)
 
 if __name__ == '__main__':
-    conn = get_ec2_connection()
+    #conn = get_ec2_connection()
     print 'authentication credentials ok!'
-    test_start_instances()
+    #test_start_instances()
     #test()
+    print get_instances()
+    print get_instance('tom')

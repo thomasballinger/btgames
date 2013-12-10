@@ -16,7 +16,31 @@ You also need to
 Remember to turn off your instances when you're done!
 
 
-To Run:
+Contest Rules
+-------------
+
+* Use the "real" output time for the unix `time` command, or the larger fabric time, output when the fab command finishes.
+* Run your bittorrent client at least twice, and as many times more as you want.
+
+New Instructions
+----------------
+
+Plan:
+
+* nicely named instances! Really important!
+  * tracker1, peer1, peer2, client1
+  * keep track of names
+  * make -i unnecessary - just add the key with ssh-add
+* command to list running instances
+* command to kill running instances
+* tags on instances so we know which ones are bittorrent ones
+
+
+
+
+
+Old Version
+-----------
 
 
 Write a python module that provies three functions: install, torretfile, and download. See tom.py as an example, and add your to the resitory for more examples.
