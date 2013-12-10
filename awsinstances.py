@@ -84,7 +84,7 @@ def get_ami(conn):
     ami = conn.get_image(ami_id)
     return ami
 
-def new_instance(label):
+def new_instance(label, wait=True):
     """Returns how to access started instance."""
     conn = get_ec2_connection()
     key, pem = get_key_pair_name_and_pem_file(conn)
@@ -99,8 +99,13 @@ def new_instance(label):
     instance = reservation.instances[0]
     instance.add_tag('Name', label)
     instance.add_tag('Group', GROUPNAME)
-    host_string = 'ubuntu@%s' % instance.public_dns_name
-    return host_string, pem
+    while wait:
+        time.sleep(1)
+        sys.stderr.write('.')
+        sys.stderr.flush()
+        instance.update()
+        if instance.public_dns_name:
+            return 'ubuntu@%s' % instance.public_dns_name, pem
 
 def terminate_instance(*args, **kwargs):
     conn = get_ec2_connection()
