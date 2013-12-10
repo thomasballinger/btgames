@@ -55,7 +55,7 @@ def get_key_pair_name_and_pem_file(conn, pem_filename=None):
     for key in keys:
         fn = find_key_file(key.name)
         if fn:
-            return key, fn
+            return key.name, fn
     else:
         return new_key(keys)
 
@@ -85,7 +85,7 @@ def get_ami(conn):
     return ami
 
 def new_instance(label):
-    """Returns how to access started instance. Blocks until instance is ready."""
+    """Returns how to access started instance."""
     conn = get_ec2_connection()
     key, pem = get_key_pair_name_and_pem_file(conn)
     secgrp = get_security_group(conn)
@@ -99,7 +99,8 @@ def new_instance(label):
     instance = reservation.instances[0]
     instance.add_tag('Name', label)
     instance.add_tag('Group', GROUPNAME)
-    return instance, pem
+    host_string = 'ubuntu@%s' % instance.public_dns_name
+    return host_string, pem
 
 def terminate_instance(*args, **kwargs):
     conn = get_ec2_connection()
@@ -109,6 +110,10 @@ def terminate_instance(*args, **kwargs):
 def get_instances():
     conn = get_ec2_connection()
     return [inst for inst in conn.get_only_instances() if inst.tags.get('Group') == GROUPNAME]
+
+def get_instances_with_name(name):
+    conn = get_ec2_connection()
+    return [inst for inst in conn.get_only_instances() if inst.tags.get('Group') == GROUPNAME and inst.tags.get('Name') == name]
 
 def get_instance(name=None, public_dns_name=None):
     if name and public_dns_name:
@@ -123,7 +128,7 @@ def get_instance(name=None, public_dns_name=None):
     if len(instances) < 1:
         raise ValueError("Can't find instance from '%s'" % name or public_dns_name)
     elif len(instances) > 1:
-        raise ValueError("Found two instances from '%s'" % name or public_dns_name)
+        raise ValueError("Found two instances with name '%s'" % name or public_dns_name)
     return instances[0]
 
 if __name__ == '__main__':

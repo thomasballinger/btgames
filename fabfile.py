@@ -107,6 +107,8 @@ def seed_file(datafilename, tracker=None):
 
 def new_instance(name):
     """new_instance:nameOfInstance - Boot up a new instance, use it for following commands"""
+    if awsinstances.get_instances_with_name(name):
+        raise ValueError("Already an instance with that name")
     access, pem = awsinstances.new_instance(name)
     print 'set up instance, access with:'
     print 'ssh %s -i %s' % (access, pem)

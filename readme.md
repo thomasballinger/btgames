@@ -22,8 +22,8 @@ Contest Rules
 * Use the "real" output time for the unix `time` command, or the larger fabric time, output when the fab command finishes.
 * Run your bittorrent client at least twice, and as many times more as you want.
 
-New Instructions
-----------------
+Instructions
+------------
 
 It's your job to write a python module provides three functions: install, torretfile, and download. See tom.py as an example, and add your to the repository for more examples, and so others can test your client on their own scenario.
 
@@ -31,37 +31,43 @@ To debug your install script, try:
 
 `fab new_instance:testing`
 
-and try to install your bittorrent client. Keep track of all the commands you use, and write a script similar to tom.py. Terminate that instance,
+and try to install your bittorrent client on that machine.
+Keep track of all the commands you use, and write a script similar to tom.py. Terminate that instance,
 
-`fab 
+`fab instance:testing terminate`
 
-Thi
+then try out your install script for real:
 
-`fab install:yourModuleNameHere -H hostname_from_prev_command -i key filename_from_prev_command`
+`fab new_instance:client wait_until_ready install:tom` but replace "tom" with your custom module
 
-You can poke around your instance with
+Once you've got a working install script, spin up a tracker and a peer:
 
-`ssh hostname_from_prev_command -i key filename_from_prev_command`
+`fab new_instance:tracker install_tracker new_instance:peer install_deluge`
 
+take a moment to reflect on the three instances you're running,
 
+`fab list`
 
-To set up a scenario:
+and seed a file:
 
-Download the file you want to test using `wget`. Then, run
+`wget https://dl.dropboxusercontent.com/u/42074050/1999-12-31%2018.20.09.jpg cabin.jpg`
 
-`fab installScenario1:tom,big_datafile_to_download`
+`fab instance:peer seed_file:cabin.jpg`
 
-Then run it with
+That command should leave a torrent file called `test.torrent` on your local computer;
+you can test it by running your bittorrent client there if you want, or go straight to
+running it on the instance you installed it on:
 
-`fab runScenario1:username,test.torrent -H hostname_from_prev_command -i pem_key_from_prev_command`
+`fab instance:client download:test.torrent`
 
-Change the datafile without reinstalling:
+Try it a few times, add your time to this readme, and try some larger files!
 
-`fab seedFile:big_datafile,announce_url (printed at some point) -H seeding_server_hostname (printed at some point)`
+Notes
+-----
 
-Download one of the test files (see results section), upload it, and add your times!
+You can still use these `fab` commands with a `-H ubuntu@hostname -i keyname`,
+you just don't have to if you include `instance:instanceName` before the command you want.
 
-If setting up an Amazon account is a burden, let me know and we can write your script together on my account.
 
 Results:
 ========
