@@ -110,10 +110,12 @@ def new_instance(name):
     if awsinstances.get_instances_with_name(name):
         raise ValueError("Already an instance with that name")
     access, pem = awsinstances.new_instance(name)
-    print 'set up instance, access with:'
-    print 'ssh %s -i %s' % (access, pem)
     env.host_string = access
     env.key_filename = pem
+
+def ssh():
+    print 'to ssh to instance, use:'
+    print 'ssh %s -i %s' % (env.host_string, env.key_filename)
 
 def _get_userscript(who):
     if who[-3:] == '.py':
@@ -138,6 +140,15 @@ def install(who):
     print 'Should be installed on', env.host_string
     print 'To look around, try'
     print 'ssh %s -i %s' % (env.host_string, env.key_filename)
+
+def download(who, torrentfile):
+    """Whose code to test, which torrent files - One peer, one tracker"""
+    user = _get_userscript(who)
+    user.torrentfile(torrentfile)
+    t0 = time.time()
+    user.download()
+    t = time.time() - t0
+    print 'command took %2f seconds' % t
 
 def install_scenario_1(who, filename):
     """takes a data filename and a user - One peer, one tracker"""

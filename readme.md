@@ -25,11 +25,11 @@ Contest Rules
 Instructions
 ------------
 
-It's your job to write a python module provides three functions: install, torretfile, and download. See tom.py as an example, and add your to the repository for more examples, and so others can test your client on their own scenario.
+It's your job to write a python module provides three functions: install, torrentfile, and download. See tom.py as an example, and add your to the repository for more examples, and so others can test your client on their own scenario.
 
 To debug your install script, try:
 
-`fab new_instance:testing`
+`fab new_instance:testing ssh`
 
 and try to install your bittorrent client on that machine.
 Keep track of all the commands you use, and write a script similar to tom.py. Terminate that instance,
@@ -42,7 +42,7 @@ then try out your install script for real:
 
 Once you've got a working install script, spin up a tracker and a peer:
 
-`fab new_instance:tracker install_tracker new_instance:peer install_deluge`
+`fab new_instance:tracker wait_until_ready install_tracker new_instance:peer wait_until_ready install_deluge`
 
 take a moment to reflect on the three instances you're running,
 
