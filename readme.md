@@ -44,6 +44,10 @@ Once you've got a working install script, spin up a tracker and a peer:
 
 `fab use_new_instance:tracker install_tracker & use_new_instance:peer install_deluge`
 
+Next you should start the tracker,
+
+`fab instance:tracker start_tracker
+
 take a moment to reflect on the three instances you're running,
 
 `fab list`
@@ -58,7 +62,7 @@ That command should leave a torrent file called `test.torrent` on your local com
 you can test it by running your bittorrent client there if you want, or go straight to
 running it on the instance you installed it on:
 
-`fab instance:client download:test.torrent`
+`fab instance:client download:tom,test.torrent`
 
 Try it a few times, add your time to this readme, and try some larger files!
 
