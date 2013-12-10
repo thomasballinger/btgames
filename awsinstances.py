@@ -98,44 +98,19 @@ def new_instance(label):
     instance.add_tag('Group', GROUPNAME)
     return instance, pem
 
-def start_instance():
-    instance, pem = _start_instance()
-    spinner = '-\|/'
-    i = 0
-    while True:
-        i += 1
-        time.sleep(1)
-        sys.stdout.write('%s%s\r' % (spinner[i%4], instance.update()))
-        sys.stdout.flush()
-        if instance.state == 'running':
-            time.sleep(45) # seems to take this long before an apt-get update will work correctly
-            break
-    return 'ubuntu@' + instance.public_dns_name, pem
-
-def start_instances(n):
-    """Start several instances without waiting for each one separately"""
-    if n > 10:
-        print 'really?'
-        raise SystemExit()
-    instances = [_start_instance() for _ in range(n)]
-    while not all([inst.state == 'running' or inst.update() == 'running'
-                   for inst, key in instances]): pass
-    instances, keys = zip(*instances)
-    time.sleep(45)
-    assert all(key == keys[0] for key in keys), 'instances have different keys?'
-    return ['ubuntu@' + inst.public_dns_name for inst in instances], keys[0]
-
 def get_instances():
     conn = get_ec2_connection()
     return [inst for inst in conn.get_only_instances() if inst.tags.get('Group') == GROUPNAME]
 
-def get_instance(name):
+def get_instance(name=None, public_dns_name=None):
     conn = get_ec2_connection()
-    inst, = [inst for inst in conn.get_only_instances() if inst.tags.get('Name') == name]
+    if public_dns_name:
+        inst, = [inst for inst in conn.get_only_instances() if inst.public_dns_name == public_dns_name]
+    elif name:
+        inst, = [inst for inst in conn.get_only_instances() if inst.tags.get('Name') == name]
+    else:
+        raise ValueError('specify a name or hostname!')
     return inst
-
-def test_start_instances():
-    print start_instances(2)
 
 if __name__ == '__main__':
     #conn = get_ec2_connection()
