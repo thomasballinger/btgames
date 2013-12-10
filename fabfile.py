@@ -112,7 +112,7 @@ def use_new_instance(name):
     """new_instance:nameOfInstance - Boot up a new instance, use it for following commands"""
     if awsinstances.get_instances_with_name(name):
         raise ValueError("Already an instance with that name")
-    access, pem = awsinstances.new_instance(name)
+    access, pem = awsinstances.new_instance(name, wait=True)
     env.host_string = access
     env.key_filename = pem
 
@@ -120,7 +120,7 @@ def new_instance(name):
     """new_instance:nameOfInstance - Boot up a new instance, use it for following commands"""
     if awsinstances.get_instances_with_name(name):
         raise ValueError("Already an instance with that name")
-    access, pem = awsinstances.new_instance(name)
+    awsinstances.new_instance(name)
 
 def ssh():
     print 'to ssh to instance, use:'
