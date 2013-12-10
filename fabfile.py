@@ -59,12 +59,15 @@ def list():
         print inst.tags.get('Name', '(no name)'), inst.state, _hostname(inst)
 
 def wait_until_ready():
-    """Wait until all specified instances are ready"""
+    """Wait until all specified instances are ready - 10s of idle time"""
     while True:
         with settings(warn_only=True, connection_attempts=1000, timeout=.1):
-            result = run('ping -c 1 -W 1 google.com')
-            if result.return_code == 0:
-                break
+            while True:
+                result = run('cat /proc/uptime')
+                up, idle = [float(x) for x in result.split()]
+                time.sleep(1)
+                if idle > 10:
+                    return
 
 def terminate():
     awsinstances.terminate_instance(public_dns_name=_dns_from_hoststring())
@@ -105,13 +108,19 @@ def seed_file(datafilename, tracker=None):
 
     get('test.torrent', 'test.torrent')
 
-def new_instance(name):
+def use_new_instance(name):
     """new_instance:nameOfInstance - Boot up a new instance, use it for following commands"""
     if awsinstances.get_instances_with_name(name):
         raise ValueError("Already an instance with that name")
     access, pem = awsinstances.new_instance(name)
     env.host_string = access
     env.key_filename = pem
+
+def new_instance(name):
+    """new_instance:nameOfInstance - Boot up a new instance, use it for following commands"""
+    if awsinstances.get_instances_with_name(name):
+        raise ValueError("Already an instance with that name")
+    access, pem = awsinstances.new_instance(name)
 
 def ssh():
     print 'to ssh to instance, use:'

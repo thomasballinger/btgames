@@ -84,7 +84,7 @@ def get_ami(conn):
     ami = conn.get_image(ami_id)
     return ami
 
-def new_instance(label, wait=True):
+def new_instance(label, wait=False):
     """Returns how to access started instance."""
     conn = get_ec2_connection()
     key, pem = get_key_pair_name_and_pem_file(conn)

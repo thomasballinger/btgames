@@ -29,7 +29,7 @@ It's your job to write a python module provides three functions: install, torren
 
 To debug your install script, try:
 
-`fab new_instance:testing ssh`
+`fab use_new_instance:testing ssh`
 
 and try to install your bittorrent client on that machine.
 Keep track of all the commands you use, and write a script similar to tom.py. Terminate that instance,
@@ -38,11 +38,11 @@ Keep track of all the commands you use, and write a script similar to tom.py. Te
 
 then try out your install script for real:
 
-`fab new_instance:client wait_until_ready install:tom` but replace "tom" with your custom module
+`fab use_new_instance:client wait_until_ready install:tom` but replace "tom" with your custom module
 
 Once you've got a working install script, spin up a tracker and a peer:
 
-`fab new_instance:tracker wait_until_ready install_tracker new_instance:peer wait_until_ready install_deluge`
+`fab use_new_instance:tracker wait_until_ready install_tracker & use_new_instance:peer wait_until_ready install_deluge`
 
 take a moment to reflect on the three instances you're running,
 
