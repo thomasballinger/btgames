@@ -46,7 +46,7 @@ Once you've got a working install script, spin up a tracker and a peer:
 
 Next you should start the tracker,
 
-`fab instance:tracker start_tracker
+`fab instance:tracker start_tracker`
 
 take a moment to reflect on the three instances you're running,
 
