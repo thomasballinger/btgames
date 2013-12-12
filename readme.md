@@ -86,6 +86,7 @@ Small File (2MB, https://dl.dropboxusercontent.com/u/42074050/1999-12-31%2018.20
 * Tom: 4.8, 2.2, 2.4, 2.15, 2.18
 * Stacey: 1.06, 0.94, 0.96, 1.04, 0.98
 * Jeff: 0.94, 0.95, 1.04
+* Steve: 1.06, 0.83, 0.86
 
 Medium File (28 MB, http://www.gutenberg.org/cache/epub/29765/pg29765.txt)
 
