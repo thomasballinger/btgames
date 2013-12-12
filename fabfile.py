@@ -12,6 +12,8 @@ import time
 
 import awsinstances
 
+TRACKER_PORT = 6969
+
 def install_tracker():
     """Installs opentracker"""
     wait_until_ready()
@@ -23,15 +25,17 @@ def install_tracker():
     run('git clone git://erdgeist.org/opentracker')
     with cd("opentracker"):
         run('make')
-    port = 6969
     host = _dns_from_hoststring()
     inst = awsinstances.get_instance(public_dns_name=host)
-    announce = 'http://%s:%d/announce' % (inst.public_dns_name, port)
+    announce = 'http://%s:%d/announce' % (inst.public_dns_name, TRACKER_PORT)
     _save_announce_url(announce)
 
 def start_tracker():
     """Starts a tracker running - only run on trackers"""
     run('screen -d -m "opentracker/opentracker"', pty=False)
+    inst = awsinstances.get_instance(public_dns_name=_dns_from_hoststring())
+    announce = 'http://%s:%d/announce' % (inst.public_dns_name, TRACKER_PORT)
+    _save_announce_url(announce)
 
 def _hostname(instance):
     return 'ubuntu@%s' % instance.public_dns_name
