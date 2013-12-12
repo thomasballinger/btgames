@@ -42,7 +42,7 @@ then try out your install script for real:
 
 Once you've got a working install script, spin up a tracker and a peer:
 
-`fab use_new_instance:tracker install_tracker & use_new_instance:peer install_deluge`
+`fab use_new_instance:tracker install_tracker & fab use_new_instance:peer install_deluge`
 
 Next you should start the tracker,
 
