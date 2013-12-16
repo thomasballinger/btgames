@@ -94,6 +94,7 @@ Medium File (28 MB, http://www.gutenberg.org/cache/epub/29765/pg29765.txt)
 * Tom: 14.8, 14.9, 15.7
 * Stacey: 8.95, 10.97, 9.53, 7.5, 7.07, 7.84, 6.59, 7.11, 8.21
 * Jeff: 4.40, 4.20, 4.50
+* Steve: 3.41, 4.88, 4.68
 * Brian and Jari: 0.91, 0.91, 0.88, 0.91, 0.94
 
 Large File (200MB, http://05d2db1380b6504cc981-8cbed8cf7e3a131cd8f1c3e383d10041.r93.cf2.rackcdn.com/pycon-us-2010/276_the-mighty-dictionary-55.m4v)
