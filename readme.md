@@ -102,6 +102,7 @@ Large File (200MB, http://05d2db1380b6504cc981-8cbed8cf7e3a131cd8f1c3e383d10041.
 * Tom: 529 seconds
 * Stacey: 49.26 54.13 53.78 62.41 62.36
 * Jeff: 68.27, 68.40, 66.15
+* Steve: 23.35, 32.97, 31.96
 * Brian and Jari: 7.83, 7.03
 
 Other Scenario Ideas:
