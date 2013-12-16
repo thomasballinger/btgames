@@ -87,7 +87,7 @@ Small File (2MB, https://dl.dropboxusercontent.com/u/42074050/1999-12-31%2018.20
 * Stacey (Twisted): 1.06, 0.94, 0.96, 1.04, 0.98
 * Stacey (Non-Twisted): 0.823 0.909 0.892
 * Jeff: 0.94, 0.95, 1.04
-* Steve: 1.06, 0.83, 0.86
+* Steve: 0.75, 0.78, 0.76
 * Brian and Jari: 0.11, 0.11, 0.11, 0.11, 0.11
 
 Medium File (28 MB, http://www.gutenberg.org/cache/epub/29765/pg29765.txt)
@@ -96,6 +96,7 @@ Medium File (28 MB, http://www.gutenberg.org/cache/epub/29765/pg29765.txt)
 * Stacey (Twisted): 8.95, 10.97, 9.53, 7.5, 7.07, 7.84, 6.59, 7.11, 8.21
 * Stacey (Non-Twisted): 4.805 5.343 4.576
 * Jeff: 4.40, 4.20, 4.50
+* Steve: 3.41, 3.37, 3.35
 * Brian and Jari: 0.91, 0.91, 0.88, 0.91, 0.94
 
 Large File (200MB, http://05d2db1380b6504cc981-8cbed8cf7e3a131cd8f1c3e383d10041.r93.cf2.rackcdn.com/pycon-us-2010/276_the-mighty-dictionary-55.m4v)
@@ -104,6 +105,7 @@ Large File (200MB, http://05d2db1380b6504cc981-8cbed8cf7e3a131cd8f1c3e383d10041.
 * Stacey (Twisted): 49.26 54.13 53.78 62.41 62.36
 * Stacey (Non-Twisted): 51.3 49.73 50.03
 * Jeff: 68.27, 68.40, 66.15
+* Steve: 23.35, 23.26, 23.863
 * Brian and Jari: 7.83, 7.03
 
 Other Scenario Ideas:
