@@ -32,6 +32,8 @@ def install_tracker():
 
 def start_tracker():
     """Starts a tracker running - only run on trackers"""
+    run('cat opentracker/README')
+    run('touch tracker_started')
     run('screen -d -m "opentracker/opentracker"', pty=False)
     inst = awsinstances.get_instance(public_dns_name=_dns_from_hoststring())
     announce = 'http://%s:%d/announce' % (inst.public_dns_name, TRACKER_PORT)
@@ -129,6 +131,7 @@ def new_instance(name):
     awsinstances.new_instance(name)
 
 def ssh():
+    """Prints a suggested command to use to ssh into an instance"""
     print 'to ssh to instance, use:'
     print 'ssh %s -i %s' % (env.host_string, env.key_filename)
 
