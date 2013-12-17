@@ -84,8 +84,8 @@ One Tracker, One Peer, Default Deluge Upload Limit
 Small File (2MB, https://dl.dropboxusercontent.com/u/42074050/1999-12-31%2018.20.09.jpg)
 
 * Tom: 4.8, 2.2, 2.4, 2.15, 2.18
-* Stacey (Twisted): 1.06, 0.94, 0.96, 1.04, 0.98
-* Stacey (Non-Twisted): 0.823 0.909 0.892
+* Stacey (Non-Twisted): 0.71 0.63 0.735 0.63  avg: 0.68
+* Stacey (Twisted): 0.95 1.07 1.02 0.98 avg: 1.01
 * Jeff: 0.94, 0.95, 1.04
 * Steve: 0.75, 0.78, 0.76
 * Brian and Jari: 0.11, 0.11, 0.11, 0.11, 0.11
@@ -93,8 +93,8 @@ Small File (2MB, https://dl.dropboxusercontent.com/u/42074050/1999-12-31%2018.20
 Medium File (28 MB, http://www.gutenberg.org/cache/epub/29765/pg29765.txt)
 
 * Tom: 14.8, 14.9, 15.7
-* Stacey (Twisted): 8.95, 10.97, 9.53, 7.5, 7.07, 7.84, 6.59, 7.11, 8.21
-* Stacey (Non-Twisted): 4.805 5.343 4.576
+* Stacey (Non-Twisted: 6.08 5.69 7.36 5.77 avg: 6.22
+* Stacey (Twisted): 6.77 8.53 9.0 6.60 avg: 7.73
 * Jeff: 4.40, 4.20, 4.50
 * Steve: 3.41, 3.37, 3.35
 * Brian and Jari: 0.91, 0.91, 0.88, 0.91, 0.94
@@ -102,8 +102,8 @@ Medium File (28 MB, http://www.gutenberg.org/cache/epub/29765/pg29765.txt)
 Large File (200MB, http://05d2db1380b6504cc981-8cbed8cf7e3a131cd8f1c3e383d10041.r93.cf2.rackcdn.com/pycon-us-2010/276_the-mighty-dictionary-55.m4v)
 
 * Tom: 529 seconds
-* Stacey (Twisted): 49.26 54.13 53.78 62.41 62.36
-* Stacey (Non-Twisted): 51.3 49.73 50.03
+* Stacey (Non-Twisted): 56.0 57.01 58.16 59.62 avg: 57.7
+* Stacey (Twisted): 64.69 67.02 66.31 65.08 avg: 65.53
 * Jeff: 68.27, 68.40, 66.15
 * Steve: 23.35, 23.26, 23.863
 * Brian and Jari: 7.83, 7.03
